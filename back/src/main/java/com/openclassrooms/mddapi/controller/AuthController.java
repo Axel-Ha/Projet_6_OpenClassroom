@@ -1,5 +1,6 @@
 package com.openclassrooms.mddapi.controller;
 
+import com.openclassrooms.mddapi.domain.dto.LoginUserDto;
 import com.openclassrooms.mddapi.domain.dto.RegisterUserDto;
 import com.openclassrooms.mddapi.domain.entity.AuthResponse;
 import com.openclassrooms.mddapi.services.AuthService;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-    private AuthService authService;
+    private final AuthService authService;
 
     public AuthController(AuthService authService){
         this.authService = authService;
@@ -20,4 +21,10 @@ public class AuthController {
     public ResponseEntity<AuthResponse> register(@RequestBody RegisterUserDto registerUserDto ){
         return ResponseEntity.ok(authService.register(registerUserDto));
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<AuthResponse> login(@RequestBody LoginUserDto loginUserDto){
+        return ResponseEntity.ok(authService.login(loginUserDto));
+    }
+
 }

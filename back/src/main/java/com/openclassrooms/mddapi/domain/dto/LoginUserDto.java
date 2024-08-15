@@ -1,0 +1,12 @@
+package com.openclassrooms.mddapi.domain.dto;
+
+import lombok.Data;
+
+@Data
+public class LoginUserDto {
+
+    private String email;
+
+
+    private String password;
+}
