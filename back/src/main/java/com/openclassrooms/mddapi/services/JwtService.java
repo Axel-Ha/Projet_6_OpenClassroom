@@ -2,8 +2,10 @@ package com.openclassrooms.mddapi.services;
 
 import java.time.Instant;
 import java.util.Date;
+import java.util.function.Function;
 
 import com.openclassrooms.mddapi.exceptions.JWTErrorException;
+import com.openclassrooms.mddapi.security.services.UserDetailsImpl;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -21,83 +23,104 @@ public class JwtService {
     @Value("${jwt.secret}")
     private String SECRET_KEY;
 
-    // Generate JWT token for a user
-    public String generateToken(UserDetails userDetails) {
-        try {
-            String username = userDetails.getUsername();
-            Date currentDate = new Date(System.currentTimeMillis());
-            Date expireDate = new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000); // 1 day in milliseconds
-
-            return Jwts.builder()
-                    .setSubject(username)
-                    .setIssuedAt(currentDate)
-                    .setExpiration(expireDate)
-                    .signWith(getSignInKey())
-                    .compact();
-        } catch (Exception e) {
-            throw new JWTErrorException("Error generating token", e);
-        }
+    /**
+     * Retrieves the signing key used for JWT token creation and validation.
+     *
+     * @return the signing key as a {@link SecretKey}
+     */
+    private SecretKey getSignKey() {
+        byte[] keyBytes = Decoders.BASE64URL.decode(SECRET_KEY);
+        return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    // Validate JWT token
-    public boolean isTokenValid(String token, UserDetails userDetails) {
-        try {
-            String username = extractUsername(token);
-            return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
-        } catch (Exception e) {
-            throw new JWTErrorException("Error validating token", e);
-        }
-    }
-    // Check if the token is expired
-    public boolean isTokenExpired(String token) {
-        try {
-            return extractExpiration(token).before(new Date());
-        } catch (Exception e) {
-            throw new JWTErrorException("Error checking if token is expired", e);
-        }
+    /**
+     * Generates a JWT token for the given user details.
+     *
+     * @param userDetails the user details to include in the token
+     * @return the generated JWT token as a {@link String}
+     */
+    public String generateToken(UserDetailsImpl userDetails) {
+        String username = userDetails.getUsername();
+        Date currentDate = new Date(System.currentTimeMillis());
+        Date expireDate = new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000); /* 1 day in ms */
+
+        String token = Jwts.builder()
+                .subject(username)
+                .issuedAt(currentDate)
+                .expiration(expireDate)
+                .signWith(getSignKey())
+                .compact();
+
+        return token;
     }
 
-    // Extract username from JWT token
+    /**
+     * Extracts claims from the given JWT token.
+     *
+     * @param token the JWT token
+     * @return the claims contained in the token as a {@link Claims} object
+     */
+    private Claims extractClaims(String token) {
+        return Jwts.parser()
+                .verifyWith(getSignKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+    }
+
+    /**
+     * Extracts a specific claim from the given JWT token using the provided
+     * resolver function.
+     *
+     * @param <T>      the type of the claim
+     * @param token    the JWT token
+     * @param resolver the function used to extract the claim
+     * @return the extracted claim of type {@code T}
+     */
+    public <T> T extractClaim(String token, Function<Claims, T> resolver) {
+        Claims claims = extractClaims(token);
+        return resolver.apply(claims);
+    }
+
+    /**
+     * Extracts the username from the given JWT token.
+     *
+     * @param token the JWT token
+     * @return the username extracted from the token
+     */
     public String extractUsername(String token) {
-        try {
-            Claims claims = extractAllClaims(token);
-            return claims.getSubject();
-        } catch (Exception e) {
-            throw new JWTErrorException("Error extracting username from token", e);
-        }
+        return extractClaim(token, Claims::getSubject);
     }
 
-    // Extract expiration date from the token
+    /**
+     * Checks if the given JWT token is valid for the specified user.
+     *
+     * @param token the JWT token
+     * @param user  the user details
+     * @return {@code true} if the token is valid, {@code false} otherwise
+     */
+    public boolean isValid(String token, UserDetailsImpl user) {
+        String username = extractUsername(token);
+        return (username.equals(user.getUsername()) || username.equals(user.getEmail()) && !isTokenExpired(token));
+    }
+
+    /**
+     * Checks if the given JWT token has expired.
+     *
+     * @param token the JWT token
+     * @return {@code true} if the token is expired, {@code false} otherwise
+     */
+    private boolean isTokenExpired(String token) {
+        return extractExpiration(token).before(new Date());
+    }
+
+    /**
+     * Extracts the expiration date from the given JWT token.
+     *
+     * @param token the JWT token
+     * @return the expiration date as a {@link Date}
+     */
     private Date extractExpiration(String token) {
-        try {
-            Claims claims = extractAllClaims(token);
-            return claims.getExpiration();
-        } catch (Exception e) {
-            throw new JWTErrorException("Error extracting expiration from token", e);
-        }
-    }
-
-    // Extract all claims from the token
-    private Claims extractAllClaims(String token) {
-        try {
-            return Jwts
-                    .parser()
-                    .setSigningKey(getSignInKey())
-                    .build()
-                    .parseClaimsJws(token)
-                    .getBody();
-        } catch (Exception e) {
-            throw new JWTErrorException("Error extracting claims from token", e);
-        }
-    }
-
-    // Decode the secret key
-    private SecretKey getSignInKey() {
-        try {
-            byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
-            return Keys.hmacShaKeyFor(keyBytes);
-        } catch (Exception e) {
-            throw new JWTErrorException("Error decoding the secret key", e);
-        }
+        return extractClaim(token, Claims::getExpiration);
     }
 }

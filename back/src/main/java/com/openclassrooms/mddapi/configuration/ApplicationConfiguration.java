@@ -2,6 +2,7 @@ package com.openclassrooms.mddapi.configuration;
 
 import com.openclassrooms.mddapi.domain.entity.UserEntity;
 import com.openclassrooms.mddapi.repository.UserRepository;
+import com.openclassrooms.mddapi.security.services.UserDetailsImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -56,10 +57,13 @@ public class ApplicationConfiguration {
     }
 
     // Convert UserEntity to Spring Security UserDetails
-    private UserDetails convertToUserDetails(UserEntity userEntity) {
-        return User.withUsername(userEntity.getEmail())
-                .password(userEntity.getPassword())
-                .authorities(Collections.emptyList()) // Can add user roles here if needed
-                .build();
+    private UserDetailsImpl convertToUserDetails(UserEntity userEntity) {
+        return new UserDetailsImpl(
+                userEntity.getUserId(),
+                userEntity.getUsername(),
+                userEntity.getEmail(),
+                userEntity.getPassword()
+        );
     }
+
 }

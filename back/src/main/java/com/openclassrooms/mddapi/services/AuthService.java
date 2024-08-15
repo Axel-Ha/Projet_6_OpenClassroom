@@ -1,22 +1,22 @@
 package com.openclassrooms.mddapi.services;
 
-import com.openclassrooms.mddapi.domain.dto.LoginUserDto;
-import com.openclassrooms.mddapi.domain.dto.RegisterUserDto;
-import com.openclassrooms.mddapi.domain.entity.AuthResponse;
 import com.openclassrooms.mddapi.domain.entity.UserEntity;
-import com.openclassrooms.mddapi.mapper.RegisterMapper;
+import com.openclassrooms.mddapi.payload.request.LoginRequest;
+import com.openclassrooms.mddapi.payload.request.RegisterRequest;
+import com.openclassrooms.mddapi.payload.response.AuthResponse;
+import com.openclassrooms.mddapi.payload.response.MessageResponse;
 import com.openclassrooms.mddapi.repository.UserRepository;
+import com.openclassrooms.mddapi.security.services.UserDetailsImpl;
+import com.openclassrooms.mddapi.security.services.UserDetailsServiceImpl;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Date;
-
-import static java.rmi.server.LogStream.log;
 
 @Slf4j
 @Service
@@ -24,73 +24,69 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
-    private final RegisterMapper registerMapper;
-    private final UserService userService;
     private final JwtService jwtService;
-//    private final UserMapper userMapper;
+    private final UserDetailsServiceImpl userDetailsService;
 
     public AuthService(UserRepository userRepository,
                        PasswordEncoder passwordEncoder,
                        AuthenticationManager authenticationManager,
-                       RegisterMapper registerMapper,
-                       UserService userService,
-                       JwtService jwtService) {
+                       JwtService jwtService,
+                       UserDetailsServiceImpl userDetailsService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
-        this.registerMapper = registerMapper;
-        this.userService = userService;
         this.jwtService = jwtService;
-    }
-
-    //Register
-    public AuthResponse register(RegisterUserDto registerUserDto){
-//        try {
-            // Create a new User
-            UserEntity userEntity = registerMapper.registerDtoToUserEntity(registerUserDto);
-            userEntity.setEmail(registerUserDto.getEmail());
-            userEntity.setUsername(registerUserDto.getUsername());
-
-            // Encode password
-            userEntity.setPassword(passwordEncoder.encode(registerUserDto.getPassword()));
-
-            /* Get the current DayTime */
-            userEntity.setCreatedAt(new Date());
-            userEntity.setUpdatedAt(new Date());
-
-            //Save the user in DB
-            userRepository.save(userEntity);
-
-            //Load the user details using the email provided in the registration DTO
-            UserDetails userDetails = userService.loadUserByUsername(registerUserDto.getEmail());
-
-            //Generate a JWT token for the registered user using their user details
-            return new AuthResponse(jwtService.generateToken(userDetails));
-//        }
-//        catch (Exception e){
-//            throw new UserErrorException("User registration failed", e);
-//        }
+        this.userDetailsService = userDetailsService;
     }
 
     //login a user
     @Transactional(readOnly = true)
-    public AuthResponse login(LoginUserDto loginUserDto){
-//        try{
-            // Authenticate the user using the provided email and password
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            loginUserDto.getEmail(),
-                            loginUserDto.getPassword()
-                    )
-            );
-            //Load the user details using the email provided in the registration DTO
-            UserDetails userDetails = userService.loadUserByUsername(loginUserDto.getEmail());
+    public ResponseEntity<?> login(LoginRequest loginRequest){
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 
-            // Generate and return a JWT token for the authenticated user
-            return new AuthResponse(jwtService.generateToken(userDetails));
-//        }
-//        catch (Exception e){
-//            throw new UserErrorException("User failed login", e);
-//        }
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        String jwt = jwtService.generateToken(userDetails);
+
+        return ResponseEntity.ok(new AuthResponse(
+                jwt,
+                userDetails.getId(),
+                userDetails.getUsername(),
+                userDetails.getEmail()));
+    }
+
+
+
+    //Register
+    public ResponseEntity<?> register(RegisterRequest registerRequest){
+        if (userRepository.existsByEmail(registerRequest.getEmail())) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Email is already taken!"));
+        }
+
+        // Create new user's account
+        UserEntity user = new UserEntity();
+        user.setEmail(registerRequest.getEmail());
+        user.setUsername(registerRequest.getUsername());
+        user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+
+        userRepository.save(user);
+
+        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+
+    }
+
+
+    @Transactional(readOnly = true)
+    public ResponseEntity<?> me() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        UserDetailsImpl userDetails = (UserDetailsImpl) userDetailsService.loadUserByUsername(username);
+        return ResponseEntity.ok(new AuthResponse(
+                "",
+                userDetails.getId(),
+                userDetails.getUsername(),
+                userDetails.getEmail()));
     }
 }
