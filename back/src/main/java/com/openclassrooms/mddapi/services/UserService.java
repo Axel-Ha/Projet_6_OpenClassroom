@@ -4,6 +4,7 @@ import com.openclassrooms.mddapi.domain.dto.UserDto;
 import com.openclassrooms.mddapi.domain.entity.UserEntity;
 import com.openclassrooms.mddapi.mapper.UserMapper;
 import com.openclassrooms.mddapi.repository.UserRepository;
+import jakarta.ws.rs.NotFoundException;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
@@ -21,7 +22,7 @@ import java.util.Collections;
 @Slf4j
 @Data
 @Service
-public class UserService implements UserDetailsService {
+public class UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
@@ -35,26 +36,8 @@ public class UserService implements UserDetailsService {
     public UserDto getUserById(@PathVariable final Long id){
         // Find the user by their ID in the repository
         // Map the UserEntity to UserDto using userMapper if the user is found
-        return userRepository.findById(id).map(userMapper::userToUserDto).orElseThrow();
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-//        try{
-            // Find the user by email in the repository
-            UserEntity userEntity = userRepository.findByEmail(email)
-                    // Throw an exception if the user is not found
-                    .orElseThrow(() -> new UsernameNotFoundException("User Not found"));
-            // Create a GrantedAuthority object for the user's role
-            GrantedAuthority authority = new SimpleGrantedAuthority(userEntity.getRole());
-            // Return a User object containing the user email, password, and authorities
-            return new User(userEntity.getEmail(), userEntity.getPassword(), Collections.singletonList(authority));
-//        }
-//        catch (Exception e){
-//            throw new UserErrorException("Error loading user by username", e);
-//        }
-
+        UserEntity user = userRepository.findById(id).orElseThrow(NotFoundException::new);
+        return userMapper.toDto(user);
     }
 
 }

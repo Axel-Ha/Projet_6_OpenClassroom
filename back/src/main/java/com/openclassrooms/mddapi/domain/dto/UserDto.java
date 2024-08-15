@@ -14,7 +14,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class UserDto {
 
-    private Long user_id;
+    private Long userId;
 
     @NonNull
     @Size(max = 50)
@@ -24,9 +24,6 @@ public class UserDto {
     @NonNull
     @Size(max = 20)
     private String username;
-
-    @NonNull
-    private boolean admin;
 
     @JsonIgnore
     @Size(max = 120)

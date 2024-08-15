@@ -5,6 +5,7 @@ import lombok.Data;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity
@@ -24,8 +25,15 @@ public class UserEntity {
     private String username;
 
     @Column(name= "password")
-    @Size(max = 120)
+    @Size(min = 8)
     private String password;
+
+    @ManyToMany
+    @JoinTable(name = "Subscriptions",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "topic_id"))
+    private List<Topic> subscriptions;
+
 
     @Column(name= "created_at")
     private Date createdAt;
@@ -33,7 +41,4 @@ public class UserEntity {
     @Column(name= "updated_at")
     private Date updatedAt;
 
-    //Ne vas pas etre mapper, defaut = USER
-    @Transient
-    private final String role = "USER";
 }

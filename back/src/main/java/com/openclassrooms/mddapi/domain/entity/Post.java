@@ -1,6 +1,9 @@
 package com.openclassrooms.mddapi.domain.entity;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -10,30 +13,56 @@ import java.util.Date;
 @Entity
 @Table(name = "posts")
 public class Post {
+    /**
+     * Post's unique ID.
+     * This field is the primary key for the post entity and is auto-generated.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name= "post_id")
-    private Long postId;
+    private Long post_id;
 
-    @Column(name= "email", unique = true)
-    @Size(max = 30)
-    private String email;
+    /**
+     * Topic associated with the post.
+     * This field represents a many-to-one relationship with the {@link Topic}
+     * entity.
+     */
+    @ManyToOne
+    @JoinColumn(name = "topic_id", referencedColumnName = "topic_id")
+    private Topic topic;
 
-    @Column(name= "username")
-    @Size(max = 20)
-    private String username;
+    /**
+     * Post's title.
+     * This field must be non-null and non-blank.
+     */
+    @NotNull
+    @NotBlank
+    @Size(max = 50)
+    private String title;
 
-    @Column(name= "password")
-    @Size(max = 120)
-    private String password;
+    /**
+     * Author of the post.
+     * This field represents a many-to-one relationship with the {@link UserEntity}
+     * entity.
+     */
+    @ManyToOne
+    @JoinColumn(name = "author_id", referencedColumnName = "user_id")
+    private UserEntity user;
 
-    @Column(name= "created_at")
+    /**
+     * Post's content.
+     * This field must be non-null and non-blank.
+     */
+    @NotNull
+    @NotBlank
+    @Size(max = 10000)
+    private String content;
+
+    /**
+     * Post's creation date.
+     * This field is automatically set to the date when the post is created.
+     */
+    @CreationTimestamp
+    @Column(name = "created_at")
     private Date createdAt;
-
-    @Column(name= "updated_at")
-    private Date updatedAt;
-
-    //Ne vas pas etre mapper, defaut = USER
-    @Transient
-    private final String role = "USER";
 }
