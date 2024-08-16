@@ -4,6 +4,7 @@ import com.openclassrooms.mddapi.domain.entity.Topic;
 import com.openclassrooms.mddapi.repository.TopicRepository;
 import com.openclassrooms.mddapi.repository.UserRepository;
 import jakarta.ws.rs.NotFoundException;
+import javax.persistence.EntityNotFoundException;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -14,6 +15,7 @@ import com.openclassrooms.mddapi.domain.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+
 
 @Mapper(componentModel = "spring")
 public abstract class PostMapper {
@@ -35,11 +37,11 @@ public abstract class PostMapper {
 
     @Named("toTopicEntity")
     Topic toTopicEntity(Long id) {
-        return topicRepository.findById(id).orElseThrow(NotFoundException::new);
+        return topicRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Topic not found with id: " + id));
     }
 
     @Named("toUserEntity")
     UserEntity toUserEntity(Long id) {
-        return userRepository.findById(id).orElseThrow(NotFoundException::new);
+        return userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
     }
 }
