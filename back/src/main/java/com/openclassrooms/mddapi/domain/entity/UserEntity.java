@@ -1,6 +1,8 @@
 package com.openclassrooms.mddapi.domain.entity;
 
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -36,9 +38,11 @@ public class UserEntity {
     private List<Topic> subscriptions;
 
 
+    @CreationTimestamp
     @Column(name= "created_at")
     private LocalDateTime createdAt;
 
+    @UpdateTimestamp
     @Column(name= "updated_at")
     private LocalDateTime updatedAt;
 

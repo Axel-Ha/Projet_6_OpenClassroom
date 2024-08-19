@@ -1,6 +1,7 @@
 package com.openclassrooms.mddapi.domain.entity;
 
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -27,6 +28,7 @@ public class Comment {
     @Column(name="message")
     private String message;
 
+    @CreationTimestamp
     @Column(name="created_at")
     private LocalDateTime createdAt;
 }
