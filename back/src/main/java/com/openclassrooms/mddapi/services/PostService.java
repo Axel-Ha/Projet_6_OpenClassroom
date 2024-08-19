@@ -8,6 +8,8 @@ import com.openclassrooms.mddapi.repository.PostRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PostService {
 
@@ -19,7 +21,8 @@ public class PostService {
         this.postMapper = postMapper;
     }
 
-
+    public Post getById(Long id){return this.postRepository.findById(id).orElse(null);}
+    public List<Post> findAll(){return this.postRepository.findAll();}
     public ResponseEntity<MessageResponse> createPost(PostDto postDto){
         postRepository.save(postMapper.toEntity(postDto));
         return ResponseEntity.ok(new MessageResponse("Post created successfully!"));
