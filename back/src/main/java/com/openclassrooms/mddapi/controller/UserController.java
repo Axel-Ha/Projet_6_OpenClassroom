@@ -19,11 +19,15 @@ public class UserController {
         this.userService = userService;
     }
 
+    @GetMapping("{id}")
+    public ResponseEntity<?> getUser(@PathVariable("id") Long id){
+        return ResponseEntity.ok(userService.getUserById(id));
+    }
+
     @PutMapping("{id}")
     public ResponseEntity<?> updateUser(@PathVariable("id") Long id, @Valid @RequestBody UserDto userDto){
         return ResponseEntity.ok(userService.updateUser(id, userDto));
     }
-
 
     @GetMapping("{id}/subscriptions")
     public ResponseEntity<?> getSubscriptions(@PathVariable("id") Long id){
