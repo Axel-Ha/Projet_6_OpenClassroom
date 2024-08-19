@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -64,5 +65,5 @@ public class Post {
      */
     @CreationTimestamp
     @Column(name = "created_at")
-    private Date createdAt;
+    private LocalDateTime createdAt;
 }

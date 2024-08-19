@@ -27,6 +27,7 @@ public abstract class PostMapper {
 
     @Mapping(target = "topic_id", source = "topic.topic_id")
     @Mapping(target = "author_id", source = "user.userId")
+    @Mapping(target = "createdAt", source = "createdAt")
     public abstract PostDto toDto(Post post);
 
     @Mapping(target = "topic", source = "topic_id", qualifiedByName = "toTopicEntity")

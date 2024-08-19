@@ -7,6 +7,7 @@ import lombok.NonNull;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -29,8 +30,8 @@ public class UserDto {
     @Size(max = 120)
     private String password;
 
-    private Date created_at;
+    private LocalDateTime created_at;
 
-    private Date updated_at;
+    private LocalDateTime updated_at;
 
 }

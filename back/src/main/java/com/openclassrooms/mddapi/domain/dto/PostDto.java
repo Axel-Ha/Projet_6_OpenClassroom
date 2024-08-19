@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -48,5 +49,5 @@ public class PostDto {
     /**
      * The date and time when the post was created.
      */
-    private Date createdAt;
+    private LocalDateTime createdAt;
 }

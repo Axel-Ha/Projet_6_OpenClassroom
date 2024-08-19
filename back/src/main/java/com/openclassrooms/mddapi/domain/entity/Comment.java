@@ -3,6 +3,7 @@ package com.openclassrooms.mddapi.domain.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 
@@ -27,5 +28,5 @@ public class Comment {
     private String message;
 
     @Column(name="created_at")
-    private Date createdAt;
+    private LocalDateTime createdAt;
 }

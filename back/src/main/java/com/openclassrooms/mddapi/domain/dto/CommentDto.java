@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -44,5 +45,5 @@ public class CommentDto {
     /**
      * The date and time when the comment was created.
      */
-    private Date createdAt;
+    private LocalDateTime createdAt;
 }
