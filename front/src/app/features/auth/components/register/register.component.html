@@ -25,6 +25,16 @@
 </div> -->
 
 
+<!-- 
+ -->
+
 <div>
-    page register
+    <form class="register-form" [formGroup]="registerForm" (ngSubmit)="submit()">
+        <div>
+                <input  placeholder="Email" formControlName="email">
+                <input  placeholder="Username" formControlName="username">
+                <input  placeholder="Password" formControlName="password">
+        </div>
+        <button type="submit" [disabled]="registerForm.invalid">Submit</button>
+    </form>
 </div>

@@ -24,5 +24,12 @@
 </div> -->
 
 <div>
-    page Login
+    <form class="login-form" [formGroup]="loginForm" (ngSubmit)="submit()">
+        <div>
+                <input  placeholder="Email" formControlName="email">
+                <input  placeholder="Password" formControlName="password">
+        </div>
+        <button type="submit" [disabled]="loginForm.invalid">Submit</button>
+        <span class="error ml2">An error occurred</span>
+    </form>
 </div>
