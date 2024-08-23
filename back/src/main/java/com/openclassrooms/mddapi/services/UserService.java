@@ -8,6 +8,7 @@ import com.openclassrooms.mddapi.payload.response.AuthResponse;
 import com.openclassrooms.mddapi.payload.response.MessageResponse;
 import com.openclassrooms.mddapi.repository.TopicRepository;
 import com.openclassrooms.mddapi.repository.UserRepository;
+import com.openclassrooms.mddapi.security.services.JwtService;
 import com.openclassrooms.mddapi.security.services.UserDetailsImpl;
 import com.openclassrooms.mddapi.security.services.UserDetailsServiceImpl;
 import lombok.Data;

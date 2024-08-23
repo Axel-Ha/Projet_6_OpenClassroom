@@ -1,18 +1,13 @@
-package com.openclassrooms.mddapi.services;
+package com.openclassrooms.mddapi.security.services;
 
-import java.time.Instant;
 import java.util.Date;
 import java.util.function.Function;
 
-import com.openclassrooms.mddapi.exceptions.JWTErrorException;
-import com.openclassrooms.mddapi.security.services.UserDetailsImpl;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;

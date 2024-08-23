@@ -27,7 +27,6 @@ public class SpringSecurityConfig {
 //                                "/swagger-ui.html",
 //                                "/api/auth/register",
 //                                "/api/auth/login",
-//                                "/api/pictures/**"
 //                        ).permitAll())
 //                .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
                 .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
