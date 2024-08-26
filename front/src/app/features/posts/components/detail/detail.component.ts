@@ -41,6 +41,7 @@ export class DetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.fetchComments();
     this.postService.detail(this.postId).subscribe({
       next: (post: Post) => {
         this.post = post;
