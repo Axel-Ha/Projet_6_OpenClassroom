@@ -1,3 +1,18 @@
 <div>
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui, consequatur.
+  <div>
+    <button routerLink="/posts/create">Créer un article</button>
+    <button (click)="toggleSort()">
+      Trier par
+      <mat-icon *ngIf="sortDirection == 'asc'"> arrow_upward_alt </mat-icon>
+      <mat-icon *ngIf="sortDirection == 'desc'"> arrow_downward_alt </mat-icon>
+    </button>
+  </div>
+  <div class="link box" *ngFor="let post of (posts$ | async)" [routerLink]="['detail', post.id]">
+      <div>{{ post.title }}</div>
+      <div>{{ post.createdAt | date : "longDate" }}</div>
+      <div class="info-item">
+        <app-author-name [authorId]="post.authorId"></app-author-name>
+      </div>
+      <div>{{ post.content }}</div>
+  </div>
 </div>

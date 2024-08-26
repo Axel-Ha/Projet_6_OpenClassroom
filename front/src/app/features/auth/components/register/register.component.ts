@@ -7,51 +7,29 @@ import { RegisterRequest } from '../../interfaces/registerRequest.interface';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
+  styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent {
-
   public onError = false;
 
   public registerForm = this.fb.group({
-    email: [
-      '',
-      [
-        Validators.required,
-        Validators.email,
-        Validators.max(50)
-      ]
-    ],
-    username: [
-      '',
-      [
-        Validators.required,
-        Validators.min(8),
-        Validators.max(20)
-      ]
-    ],
-    password: [
-      '',
-      [
-        Validators.required,
-        Validators.min(8),
-        Validators.max(40)
-      ]
-    ]
+    email: ['', [Validators.required, Validators.email, Validators.max(50)]],
+    username: ['',[Validators.required, Validators.min(8), Validators.max(20)]],
+    password: ['',[Validators.required, Validators.min(8), Validators.max(40)]],
   });
 
-  constructor(private authService: AuthService,
+  constructor(
+    private authService: AuthService,
     private fb: FormBuilder,
-    private router: Router) {}
+    private router: Router
+  ) {}
 
   public submit(): void {
     const registerRequest = this.registerForm.value as RegisterRequest;
 
     this.authService.register(registerRequest).subscribe({
-        next: (_: void) => this.router.navigate(['/login']),
-        error: (_: any) => this.onError = true,
-      }
-    );
+      next: (_: void) => this.router.navigate(['/login']),
+      error: (_: any) => (this.onError = true),
+    });
   }
-
 }

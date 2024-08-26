@@ -4,6 +4,7 @@ import { SessionService } from 'src/app/services/session.service';
 
 import { Post } from '../../interfaces/post.interface';
 import { PostService } from '../../services/post.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-list',
@@ -12,16 +13,17 @@ import { PostService } from '../../services/post.service';
 })
 export class ListComponent {
 
-  // private userId = this.sessionService.sessionInformation!.id;
-
-  constructor(
-    private postService: PostService,
-    private sessionService: SessionService,
-  ) { 
-    console.log("test");
-  }
+  public posts$: Observable<Post[]> = this.getSortedPosts('desc');
+  public sortDirection: 'asc' | 'desc' = 'desc';
+  
+  constructor(private postService: PostService) {}
  
-  ngOnInit(): void {
-    console.log('ListComponent ngOnInit called');
+  public getSortedPosts(sortDirection: 'asc' | 'desc'): Observable<Post[]> {
+    return this.postService.getSortedPosts(sortDirection);
+  }
+
+  public toggleSort(): void {
+    this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    this.posts$ = this.getSortedPosts(this.sortDirection);
   }
 }

@@ -1,5 +1,5 @@
 export interface Topic {
-    topic_id: number,
+    topicId: number,
     name: string,
     description: string,
 }

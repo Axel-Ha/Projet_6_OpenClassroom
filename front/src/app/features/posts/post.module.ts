@@ -1,36 +1,42 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 
+import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { SharedModule } from 'src/app/shared/shared.module';
+import { CreateComponent } from './components/create/create.component';
+import { DetailComponent } from './components/detail/detail.component';
 import { ListComponent } from './components/list/list.component';
-import { SessionsRoutingModule } from './post-rounting.module';
-// import { MatCardModule } from '@angular/material/card';
-// import { MatFormFieldModule } from '@angular/material/form-field';
-// import { MatButtonModule } from '@angular/material/button';
-// import { MatInputModule } from '@angular/material/input';
-// import { FlexLayoutModule } from '@angular/flex-layout';
-// import { MatIconModule } from '@angular/material/icon';
+import { PostsRoutingModule } from './posts-rounting.module';
 
-// const materialModules = [
-//   MatButtonModule,
-//   MatCardModule,
-//   MatFormFieldModule,
-//   MatIconModule,
-//   MatInputModule
-// ]
 
 @NgModule({
   declarations: [
     ListComponent,
-
+    CreateComponent,
+    DetailComponent
   ],
   imports: [
-    SessionsRoutingModule,
     CommonModule,
-    // FlexLayoutModule,
+    PostsRoutingModule,
+    HttpClientModule,
+    MatButtonModule,
+    MatIconModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSnackBarModule,
+    MatSelectModule,
     FormsModule,
     ReactiveFormsModule,
-    // ...materialModules
+    SharedModule
   ]
 })
-export class PostModule { }
+export class PostsModule { }

@@ -1,0 +1,50 @@
+import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { SessionService } from 'src/app/services/session.service';
+
+import { Post } from '../../interfaces/post.interface';
+import { PostService } from '../../services/post.service';
+import { UserService } from 'src/app/services/user.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
+@Component({
+  selector: 'app-list',
+  templateUrl: './detail.component.html',
+  styleUrls: ['./detail.component.scss'],
+})
+export class DetailComponent implements OnInit {
+
+  public post: Post | undefined;
+  public postId: number;
+  public comments$: Observable<Comment[]> | undefined;
+  public userId: number;
+  public commentForm: FormGroup | undefined = this.formBuider.group({
+    message: ['', [Validators.required, Validators.maxLength(2000)]]
+  });
+
+
+  constructor(
+    private route: ActivatedRoute,
+    private postService: PostService,
+    private sessionService: SessionService,
+    // private commentService: CommentService,
+    private formBuider: FormBuilder,
+    private matSnackBar: MatSnackBar,
+    private router: Router
+  ) {
+    this.postId = parseInt(this.route.snapshot.paramMap.get('id')!);
+    this.userId = this.sessionService.sessionInformation!.id;
+  }
+
+  ngOnInit(): void {
+    this.postService.detail(this.postId).subscribe({
+      next: (post: Post) => {
+        this.post = post;
+      },
+      error: _ => this.router.navigate(['not-found'])
+    })
+  }
+}
+

@@ -1,0 +1,26 @@
+<div>
+    <div class="column" *ngIf="post">
+        <div class="row">
+            <button class="arrow-back" mat-icon-button routerLink="/posts">
+                <mat-icon>
+                    arrow_back
+                </mat-icon>
+            </button>
+            <p class="title">
+                {{ post.title | titlecase }}
+            </p>
+        </div>
+        <div class="row info-item-container">
+            <div class="info-item"> {{ post.createdAt | date: 'longDate' }} </div>
+            <div class="info-item">
+                <app-author-name [authorId]="post.authorId"></app-author-name>
+            </div>
+            <div class="info-item">
+                <app-topic-name [topicId]="post.topicId"></app-topic-name>
+            </div>
+        </div>
+        <div class="post-content">
+            <p>Content: {{ post.content }}</p>
+        </div>
+    </div>
+</div>
