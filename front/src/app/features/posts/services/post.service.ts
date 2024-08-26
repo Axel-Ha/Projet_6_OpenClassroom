@@ -19,7 +19,6 @@ export class PostService {
   }
 
   public create(post: Post): Observable<Post> {
-    console.log(post);
     return this.httpClient.post<Post>(this.apiUrl, post);
   }
 

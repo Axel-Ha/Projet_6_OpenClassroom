@@ -8,6 +8,8 @@ import { UserService } from 'src/app/services/user.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Comment } from 'src/app/interfaces/comment.interface';
+import {CommentService} from 'src/app/services/comment.service';
 
 @Component({
   selector: 'app-list',
@@ -29,7 +31,7 @@ export class DetailComponent implements OnInit {
     private route: ActivatedRoute,
     private postService: PostService,
     private sessionService: SessionService,
-    // private commentService: CommentService,
+    private commentService: CommentService,
     private formBuider: FormBuilder,
     private matSnackBar: MatSnackBar,
     private router: Router
@@ -45,6 +47,24 @@ export class DetailComponent implements OnInit {
       },
       error: _ => this.router.navigate(['not-found'])
     })
+  }
+
+  public fetchComments(): void{
+    this.comments$ = this.commentService.getComments(this.postId);
+  }
+
+  public sendComment(): void{
+    let comment = this.commentForm?.value as Comment;
+    comment.userId = this.userId;
+    comment.postId = this.postId;
+    this.commentService.createCommente(comment).subscribe({
+      next: _ => {
+        this.matSnackBar.open('Comment created', 'Close', { duration: 3000 });
+        this.comments$ = this.commentService.getComments(this.postId);
+        this.fetchComments();
+      },
+      error: _ => this.matSnackBar.open('Error creating comment', 'Close', { duration: 3000 })
+    });
   }
 }
 
