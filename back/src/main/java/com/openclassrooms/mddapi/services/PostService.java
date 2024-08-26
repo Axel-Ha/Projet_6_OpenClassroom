@@ -22,8 +22,11 @@ public class PostService {
     }
 
     public Post getById(Long id){return this.postRepository.findById(id).orElse(null);}
-    public List<Post> findAll(){return this.postRepository.findAll();}
+    public List<Post> findAll(){
+        return this.postRepository.findAll();
+    }
     public ResponseEntity<MessageResponse> createPost(PostDto postDto){
+        System.out.println("ceci est un test "+postDto.getId());
         postRepository.save(postMapper.toEntity(postDto));
         return ResponseEntity.ok(new MessageResponse("Post created successfully!"));
     }

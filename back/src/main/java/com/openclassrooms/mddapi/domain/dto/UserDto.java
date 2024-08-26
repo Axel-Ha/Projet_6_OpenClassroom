@@ -30,8 +30,4 @@ public class UserDto {
     @Size(max = 120)
     private String password;
 
-    private LocalDateTime created_at;
-
-    private LocalDateTime updated_at;
-
 }

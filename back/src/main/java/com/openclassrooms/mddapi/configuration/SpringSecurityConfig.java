@@ -1,5 +1,6 @@
 package com.openclassrooms.mddapi.configuration;
 
+import com.openclassrooms.mddapi.security.jwt.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -13,12 +14,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SpringSecurityConfig {
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception {
         return http
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 //                .authorizeHttpRequests(auth -> auth
-//                        .requestMatchers(
+//                        .antMatchers(
 //                                "/swagger-ui.html",
 //                                "/swagger-resources/**",
 //                                "/swagger-resources",
@@ -26,11 +27,12 @@ public class SpringSecurityConfig {
 //                                "/swagger-ui/**",
 //                                "/swagger-ui.html",
 //                                "/api/auth/register",
-//                                "/api/auth/login",
+//                                "/api/auth/login"
 //                        ).permitAll())
 //                .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
                 .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
-//                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 }
+

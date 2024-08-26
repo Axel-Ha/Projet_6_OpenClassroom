@@ -13,7 +13,7 @@ public class Topic {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name= "topic_id")
-    private Long topic_id;
+    private Long id;
 
     @Column(name= "name", unique = true)
     @Size(max = 50)

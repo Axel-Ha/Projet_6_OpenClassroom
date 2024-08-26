@@ -1,7 +1,5 @@
 package com.openclassrooms.mddapi.domain.dto;
 
-import com.openclassrooms.mddapi.domain.entity.Topic;
-import com.openclassrooms.mddapi.domain.entity.UserEntity;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -9,9 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -21,19 +17,19 @@ public class CommentDto {
     /**
      * The unique identifier of the comment.
      */
-    private Long comment_id;
+    private Long id;
 
     /**
      * The ID of the post associated with the comment.
      */
     @NotNull
-    private Long post_id;
+    private Long postId;
 
     /**
-     * The ID of the author who created the comment.
+     * The ID of the user who created the comment.
      */
     @NotNull
-    private Long author_id;
+    private Long userId;
 
     /**
      * The main content of the comment.

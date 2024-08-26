@@ -9,13 +9,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
-import java.util.Collections;
 
 @Configuration
 public class ApplicationConfiguration {
@@ -28,7 +24,7 @@ public class ApplicationConfiguration {
     @Bean
     // Define a UserDetailsService bean to load user-specific data during authentication
     public UserDetailsService userDetailsService() {
-        return username -> userRepository.findByEmail(username)
+        return usernameOrEmail -> userRepository.findByEmailOrUsername(usernameOrEmail,usernameOrEmail)
                 .map(this::convertToUserDetails)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
@@ -59,7 +55,7 @@ public class ApplicationConfiguration {
     // Convert UserEntity to Spring Security UserDetails
     private UserDetailsImpl convertToUserDetails(UserEntity userEntity) {
         return new UserDetailsImpl(
-                userEntity.getUserId(),
+                userEntity.getId(),
                 userEntity.getUsername(),
                 userEntity.getEmail(),
                 userEntity.getPassword()

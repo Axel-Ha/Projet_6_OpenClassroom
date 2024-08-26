@@ -17,12 +17,12 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest RegisterRequest ){
-        return ResponseEntity.ok(authService.register(RegisterRequest));
+        return authService.register(RegisterRequest);
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest LoginRequest){
-        return ResponseEntity.ok(authService.login(LoginRequest));
+        return authService.login(LoginRequest);
     }
 
     @GetMapping("/me")

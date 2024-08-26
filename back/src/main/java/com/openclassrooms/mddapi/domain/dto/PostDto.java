@@ -8,7 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -18,13 +17,13 @@ public class PostDto {
     /**
      * The unique identifier of the post.
      */
-    private Long post_id;
+    private Long id;
 
     /**
      * The ID of the topic associated with the post.
      */
     @NotNull
-    private Long topic_id;
+    private Long topicId;
 
     /**
      * The title of the post.
@@ -37,7 +36,7 @@ public class PostDto {
      * The ID of the author who created the post.
      */
     @NotNull
-    private Long author_id;
+    private Long authorId;
 
     /**
      * The main content of the post.

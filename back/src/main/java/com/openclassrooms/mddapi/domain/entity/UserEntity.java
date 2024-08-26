@@ -7,7 +7,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 @Data
@@ -17,7 +16,7 @@ public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name= "user_id")
-    private Long userId;
+    private Long id;
 
     @Column(name= "email", unique = true)
     @Size(max = 50)

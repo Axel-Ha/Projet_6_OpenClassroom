@@ -8,7 +8,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Data
 @Entity
@@ -21,7 +20,7 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name= "post_id")
-    private Long post_id;
+    private Long id;
 
     /**
      * Topic associated with the post.

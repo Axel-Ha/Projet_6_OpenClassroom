@@ -1,8 +1,9 @@
-package com.openclassrooms.mddapi.security.services;
+package com.openclassrooms.mddapi.security.jwt;
 
 import java.util.Date;
 import java.util.function.Function;
 
+import com.openclassrooms.mddapi.security.services.UserDetailsImpl;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;

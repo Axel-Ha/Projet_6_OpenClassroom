@@ -5,7 +5,6 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 
 @Data
@@ -15,7 +14,7 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name= "comment_id")
-    private Long comment_id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "author_id", referencedColumnName = "user_id")

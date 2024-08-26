@@ -8,7 +8,7 @@ import com.openclassrooms.mddapi.payload.response.AuthResponse;
 import com.openclassrooms.mddapi.payload.response.MessageResponse;
 import com.openclassrooms.mddapi.repository.TopicRepository;
 import com.openclassrooms.mddapi.repository.UserRepository;
-import com.openclassrooms.mddapi.security.services.JwtService;
+import com.openclassrooms.mddapi.security.jwt.JwtService;
 import com.openclassrooms.mddapi.security.services.UserDetailsImpl;
 import com.openclassrooms.mddapi.security.services.UserDetailsServiceImpl;
 import lombok.Data;
@@ -94,7 +94,7 @@ public class UserService {
 
         // Check if the user is already subscribed
         boolean isSubscribed = user.getSubscriptions().stream()
-                .anyMatch(t -> t.getTopic_id().equals(idTopic));
+                .anyMatch(t -> t.getId().equals(idTopic));
         if (isSubscribed) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is already subscribed to topic with ID: " + idTopic);
         }
@@ -113,7 +113,7 @@ public class UserService {
 
         // Check if the user is subscribed to the topic
         boolean isSubscribed = user.getSubscriptions().stream()
-                .anyMatch(t -> t.getTopic_id().equals(idTopic));
+                .anyMatch(t -> t.getId().equals(idTopic));
         if (!isSubscribed) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is not subscribed to topic with ID: " + idTopic);
         }
@@ -121,7 +121,7 @@ public class UserService {
         // Remove the subscription with the specified idTopic from the user's subscriptions
         user.setSubscriptions(
                 user.getSubscriptions().stream()
-                        .filter(t -> !t.getTopic_id().equals(idTopic))
+                        .filter(t -> !t.getId().equals(idTopic))
                         .collect(Collectors.toList()));
         userRepository.save(user);
     }

@@ -12,8 +12,6 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public abstract class UserMapper {
 
-    @Mapping(target = "created_at", source = "createdAt")
-    @Mapping(target = "updated_at", source = "updatedAt")
     public abstract UserDto toDto(UserEntity user);
 
     @Mapping(target = "createdAt", ignore = true)

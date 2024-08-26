@@ -42,17 +42,17 @@ public class UserDetailsServiceImpl implements UserDetailsService {
      * If the user is not found, it throws a {@link UsernameNotFoundException}.
      * </p>
      *
-     * @param email the username or email of the user to be retrieved
+     * @param usernameOrEmail the username or email of the user to be retrieved
      * @return a {@link UserDetails} object containing user details
      * @throws UsernameNotFoundException if no user is found with the provided
      *                                   username or email
      */
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        UserEntity user = userRepository.findByEmail(email)
+    public UserDetails loadUserByUsername(String usernameOrEmail) throws UsernameNotFoundException {
+        UserEntity user = userRepository.findByEmailOrUsername(usernameOrEmail,usernameOrEmail)
                 .orElseThrow(
-                        () -> new UsernameNotFoundException("User not found with email: " + email));
-        return new UserDetailsImpl(user.getUserId(), user.getUsername(), user.getEmail(), user.getPassword());
+                        () -> new UsernameNotFoundException("User not found with email or username : " + usernameOrEmail));
+        return new UserDetailsImpl(user.getId(), user.getUsername(), user.getEmail(), user.getPassword());
     }
 
 }

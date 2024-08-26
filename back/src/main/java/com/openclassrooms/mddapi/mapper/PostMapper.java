@@ -25,13 +25,13 @@ public abstract class PostMapper {
     @Autowired
     UserRepository userRepository;
 
-    @Mapping(target = "topic_id", source = "topic.topic_id")
-    @Mapping(target = "author_id", source = "user.userId")
+    @Mapping(target = "topicId", source = "topic.id")
+    @Mapping(target = "authorId", source = "user.id")
     @Mapping(target = "createdAt", source = "createdAt")
     public abstract PostDto toDto(Post post);
 
-    @Mapping(target = "topic", source = "topic_id", qualifiedByName = "toTopicEntity")
-    @Mapping(target = "user", source = "author_id", qualifiedByName = "toUserEntity")
+    @Mapping(target = "topic", source = "topicId", qualifiedByName = "toTopicEntity")
+    @Mapping(target = "user", source = "authorId", qualifiedByName = "toUserEntity")
     public abstract Post toEntity(PostDto postDto);
 
     public abstract List<PostDto> toDto(List<Post> posts);
