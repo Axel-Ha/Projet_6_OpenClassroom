@@ -3,12 +3,12 @@ package com.openclassrooms.mddapi.services;
 import com.openclassrooms.mddapi.domain.dto.CommentDto;
 import com.openclassrooms.mddapi.domain.entity.Comment;
 import com.openclassrooms.mddapi.domain.entity.Post;
+import com.openclassrooms.mddapi.exceptions.NotFoundException;
 import com.openclassrooms.mddapi.mapper.CommentMapper;
 import com.openclassrooms.mddapi.payload.response.MessageResponse;
 import com.openclassrooms.mddapi.repository.CommentRepository;
 import com.openclassrooms.mddapi.repository.PostRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -44,7 +44,7 @@ public class CommentService {
      * @throws ResponseStatusException if the post with the specified ID is not found
      */
     public List<CommentDto> getComments(Long postId){
-        Post post = postRepository.findById(postId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found with ID: " + postId));
+        Post post = postRepository.findById(postId).orElseThrow(() -> new NotFoundException());
         List<Comment> postComments = commentRepository.findByPost(post);
         return commentMapper.toDtos(postComments);
     }

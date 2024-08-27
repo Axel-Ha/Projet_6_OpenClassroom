@@ -1,9 +1,10 @@
 package com.openclassrooms.mddapi.mapper;
 
 import com.openclassrooms.mddapi.domain.entity.Topic;
+import com.openclassrooms.mddapi.exceptions.NotFoundException;
 import com.openclassrooms.mddapi.repository.TopicRepository;
 import com.openclassrooms.mddapi.repository.UserRepository;
-import jakarta.ws.rs.NotFoundException;
+
 import javax.persistence.EntityNotFoundException;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
