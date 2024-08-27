@@ -15,22 +15,22 @@ const routes: Routes = [
   },
   {
     path: '',
-    // canActivate: [UnauthGuard],
+    canActivate: [UnauthGuard],
     loadChildren: () => import('./features/auth/auth.module').then(m => m.AuthModule)
   },
   {
     path: 'topic',
-    // canActivate: [UnauthGuard],
+    canActivate: [AuthGuard],
     component: TopicComponent
   },
   {
     path: 'posts',
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     loadChildren: () => import('./features/posts/post.module').then(m => m.PostsModule)
   },
   {
     path: 'me',
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     component: MeComponent
   },
   {

@@ -11,11 +11,11 @@
             </p>
         </div>
         <div class="row info-item-container">
-            <div class="info-item"> {{ post.createdAt | date: 'longDate' }} </div>
-            <div class="info-item">
+            <div class="info-item"> Crée le : {{ post.createdAt | date: 'longDate' }} </div>
+            <div class="info-item"> Auteur :
                 <app-author-name [authorId]="post.authorId"></app-author-name>
             </div>
-            <div class="info-item">
+            <div class="info-item"> Thème : 
                 <app-topic-name [topicId]="post.topicId"></app-topic-name>
             </div>
         </div>
