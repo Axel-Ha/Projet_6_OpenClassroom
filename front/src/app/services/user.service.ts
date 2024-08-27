@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, map, Observable, tap } from 'rxjs';
 import { User } from '../interfaces/user.interface';
-import { Topic } from '../pages/topics/topic.interface';
+import { Topic } from '../interfaces/topic.interface';
 import { SessionInformation } from '../interfaces/sessionInformation.interface';
 
 @Injectable({
@@ -22,7 +22,10 @@ export class UserService {
     }
   
     public update(id: number, user: User): Observable<SessionInformation> {
-      return this.httpClient.put<SessionInformation>(`${this.pathService}/${id}`, user);
+      return this.httpClient.put<{ body: SessionInformation }>(`${this.pathService}/${id}`, user)
+        .pipe(
+          map(response => response.body) // Extracts the body from the response
+        );
     }
   
     public getSubscriptions(id: number): Observable<Topic[]> {

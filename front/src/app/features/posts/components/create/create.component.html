@@ -11,7 +11,6 @@
           <mat-select formControlName="topicId" placeholder="Sélectionner un thème">
             <mat-option *ngFor="let topic of topics$ | async" [value]="topic.id">
               {{ topic.name }}
-
             </mat-option>
           </mat-select>
           <mat-error *ngIf="postForm?.get('topicId')?.hasError('required')">

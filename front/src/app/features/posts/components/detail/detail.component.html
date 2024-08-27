@@ -23,32 +23,33 @@
             <p>Content: {{ post.content }}</p>
         </div>
     </div>
-    <div>
-        <div>Commentaires</div>
-        <form class="comment-form row center" [formGroup]="commentForm!" (ngSubmit)="sendComment()">
-            <mat-form-field class="input-form" appearance="outline">
-                <div class="row">
-                    <textarea rows="5" matInput formControlName="message" placeholder="Ecrivez ici votre commentaire"></textarea>
-                    <button class="inner-button" mat-icon-button matSuffix type="submit" [disabled]="commentForm!.invalid">
-                        <mat-icon>send</mat-icon>
-                    </button>
+    <hr width="80%"/>
+    <div class="column">
+        <div class="subtitle"> Commentaires </div>
+            <div class="row center flex-wrap-container" *ngFor="let comment of comments$ | async">
+                <app-author-name class="username" [authorId]="comment.userId"></app-author-name>
+                <div class="box">
+                    <p> {{ comment.message }} </p>
                 </div>
-                    <mat-error *ngIf="commentForm!.get('message')?.hasError('maxlength')">
-                        Le commentaire ne doit pas dépasser 2000 caractères.
-                    </mat-error>
-                    <mat-error *ngIf="commentForm!.get('message')?.hasError('required')">
-                        Le commentaire ne peut pas être vide.
-                    </mat-error>
-            </mat-form-field>
-            <button class="send-button" mat-icon-button type="submit" [disabled]="commentForm!.invalid">
-                <mat-icon>send</mat-icon>
-            </button>
-        </form>
-        <div *ngFor="let comment of comments$ | async">
-            <div>{{ comment.message }}</div>
-            <div>
-                <app-author-name [authorId]="comment.userId"></app-author-name>
             </div>
-        </div>
+            <form class="comment-form row center" [formGroup]="commentForm!" (ngSubmit)="sendComment()">
+                <mat-form-field class="input-form" appearance="outline">
+                    <div class="row">
+                        <textarea rows="5" matInput formControlName="message" placeholder="Ecrivez ici votre commentaire"></textarea>
+                        <button class="inner-button" mat-icon-button matSuffix type="submit" [disabled]="commentForm!.invalid">
+                            <mat-icon>send</mat-icon>
+                        </button>
+                    </div>
+                        <mat-error *ngIf="commentForm!.get('message')?.hasError('maxlength')">
+                            Le commentaire ne doit pas dépasser 2000 caractères.
+                        </mat-error>
+                        <mat-error *ngIf="commentForm!.get('message')?.hasError('required')">
+                            Le commentaire ne peut pas être vide.
+                        </mat-error>
+                </mat-form-field>
+                <button class="send-button" mat-icon-button type="submit" [disabled]="commentForm!.invalid">
+                    <mat-icon>send</mat-icon>
+                </button>
+            </form>
     </div>
 </div>

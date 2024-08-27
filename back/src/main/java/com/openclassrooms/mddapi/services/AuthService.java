@@ -83,7 +83,7 @@ public class AuthService {
     @Transactional(readOnly = true)
     public ResponseEntity<?> me() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        UserDetailsImpl userDetails = (UserDetailsImpl) userDetailsService.loadUserByUsername(username);
+        UserDetailsImpl userDetails = (UserDetailsImpl) userDetailsService.loadUserByUsername(usernameg);
         return ResponseEntity.ok(new AuthResponse(
                 "",
                 userDetails.getId(),

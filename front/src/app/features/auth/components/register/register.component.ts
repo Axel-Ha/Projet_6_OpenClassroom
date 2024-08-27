@@ -3,6 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { RegisterRequest } from '../../interfaces/registerRequest.interface';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-register',
@@ -10,7 +11,6 @@ import { RegisterRequest } from '../../interfaces/registerRequest.interface';
   styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent {
-  public onError = false;
 
   public registerForm = this.fb.group({
     email: ['', [Validators.required, Validators.email, Validators.max(50)]],
@@ -21,15 +21,21 @@ export class RegisterComponent {
   constructor(
     private authService: AuthService,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private matSnackBar: MatSnackBar
   ) {}
 
   public submit(): void {
     const registerRequest = this.registerForm.value as RegisterRequest;
-
     this.authService.register(registerRequest).subscribe({
-      next: (_: void) => this.router.navigate(['/login']),
-      error: (_: any) => (this.onError = true),
+      next: _ => {
+        this.router.navigate(['/auth/login'])
+        this.matSnackBar.open('Inscription réussie', 'Fermer', { duration: 3000 });
+      },
+      error: _ => {
+        this.matSnackBar.open('Le nom d\'utilisateur ou l\'adresse email existe déjà', 'Fermer', { duration: 3000 });
+      }
     });
   }
+
 }

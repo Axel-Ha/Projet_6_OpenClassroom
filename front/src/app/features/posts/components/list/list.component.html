@@ -1,18 +1,26 @@
 <div>
-  <div>
-    <button routerLink="/posts/create">Créer un article</button>
-    <button (click)="toggleSort()">
-      Trier par
-      <mat-icon *ngIf="sortDirection == 'asc'"> arrow_upward_alt </mat-icon>
-      <mat-icon *ngIf="sortDirection == 'desc'"> arrow_downward_alt </mat-icon>
-    </button>
-  </div>
-  <div class="link box" *ngFor="let post of (posts$ | async)" [routerLink]="['detail', post.id]">
-      <div>{{ post.title }}</div>
-      <div>{{ post.createdAt | date : "longDate" }}</div>
-      <div class="info-item">
-        <app-author-name [authorId]="post.authorId"></app-author-name>
+  <div class="column">
+    <div class="row center button-container">
+      <button class="create-button" routerLink="/posts/create">Créer un article</button>
+      <button class="sort-button" (click)="toggleSort()">
+        Trier par
+        <mat-icon *ngIf="sortDirection == 'asc'"> arrow_upward_alt </mat-icon>
+        <mat-icon *ngIf="sortDirection == 'desc'">arrow_downward_alt</mat-icon>
+      </button>
+    </div>
+    <div class="flex-wrap-container center">
+      <div class="link box" *ngFor="let post of posts$ | async" [routerLink]="['detail', post.id]" >
+        <div class="box-title">{{ post.title }}</div>
+        <div class="info-item-container row">
+          <div class="info-item"> {{ post.createdAt | date: 'longDate' }} </div>
+          <div class="info-item">
+              <app-author-name [authorId]="post.authorId"></app-author-name>
+          </div>
       </div>
-      <div>{{ post.content }}</div>
+        <div class="box-content">
+          <div>Content {{ post.content }}</div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

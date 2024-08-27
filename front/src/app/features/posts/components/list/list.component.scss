@@ -1,8 +1,50 @@
-.login {
-    margin-top: 30px;
-    mat-card {
-        margin: 20px;
-        max-width: 600px;
-        width: 100%;
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.create-button {
+    margin-right: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 45px;
+}
+
+.sort-button {
+    margin-left: auto;
+    font-size: 17px;
+    font-weight: bold;
+    margin-right: 100px;
+}
+
+@media (max-width: 600px) {
+    .row {
+        flex-direction: column;
+        justify-items: center;
+    }
+
+    .info-item-container {
+        display: flex;
+        margin-top: 15px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: left;
+    }
+
+    .create-button {
+        margin-left: 0%;
+        font-size: 17px;
+        margin-bottom: 10px;
+        margin-right: 0%;
+    }
+    
+    .sort-button {
+        margin-left: 0%;
+        font-size: 17px;
+        font-weight: bold;
+        margin-right: 30px;
     }
 }
