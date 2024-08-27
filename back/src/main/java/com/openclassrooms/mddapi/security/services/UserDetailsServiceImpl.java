@@ -14,9 +14,6 @@ import com.openclassrooms.mddapi.repository.UserRepository;
  * This service is used by Spring Security to retrieve user details based on the
  * provided username or email.
  * </p>
- *
- * @version 1.0
- * @since 2024-07-22
  */
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {

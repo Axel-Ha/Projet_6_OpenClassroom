@@ -15,6 +15,14 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
+/**
+ * Service for managing comments in the application.
+ * <p>
+ * This service provides methods to retrieve and create comments associated with posts.
+ * It interacts with the {@link CommentRepository} and {@link PostRepository} for data access operations.
+ * Uses {@link CommentMapper} for converting between entity and DTO representations of comments.
+ * </p>
+ */
 @Slf4j
 @Service
 public class CommentService {
@@ -28,14 +36,27 @@ public class CommentService {
         this.postRepository = postRepository;
     }
 
-    public List<CommentDto> getComments(Long id){
-        Post post = postRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found with ID: " + id));
+    /**
+     * Retrieves all comments associated with a specific post.
+     *
+     * @param postId the unique identifier of the post
+     * @return a list of {@link CommentDto} objects representing the comments of the specified post
+     * @throws ResponseStatusException if the post with the specified ID is not found
+     */
+    public List<CommentDto> getComments(Long postId){
+        Post post = postRepository.findById(postId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found with ID: " + postId));
         List<Comment> postComments = commentRepository.findByPost(post);
         return commentMapper.toDtos(postComments);
     }
 
-    public ResponseEntity<MessageResponse> createComment(CommentDto comment){
-        commentRepository.save(commentMapper.toEntity(comment));
+    /**
+     * Creates a new comment.
+     *
+     * @param commentDto the data transfer object containing the details of the comment to be created
+     * @return the created {@link CommentDto}
+     */
+    public ResponseEntity<MessageResponse> createComment(CommentDto commentDto){
+        commentRepository.save(commentMapper.toEntity(commentDto));
         return ResponseEntity.ok(new MessageResponse("Comment posted successfully!"));
     }
 }

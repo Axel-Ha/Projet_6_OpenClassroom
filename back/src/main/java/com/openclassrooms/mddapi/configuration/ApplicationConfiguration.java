@@ -30,7 +30,6 @@ public class ApplicationConfiguration {
     }
 
     @Bean
-        // Define a BCryptPasswordEncoder bean to encrypt passwords
     BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }

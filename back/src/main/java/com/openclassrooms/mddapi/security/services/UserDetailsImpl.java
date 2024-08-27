@@ -10,6 +10,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.HashSet;
 
+/**
+ * Implementation of {@link UserDetails} interface for Spring Security.
+ * <p>
+ * This class represents user details used by Spring Security for authentication
+ * and authorization.
+ * It implements the {@link UserDetails} interface to provide user information
+ * and account status.
+ * </p>
+ */
 @Builder
 @AllArgsConstructor
 @Getter

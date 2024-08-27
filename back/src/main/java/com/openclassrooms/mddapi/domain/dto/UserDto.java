@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -14,20 +15,22 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDto {
-
+    /**
+     * The unique identifier of the user.
+     */
     private Long userId;
 
-    @NonNull
-    @Size(max = 50)
+    /**
+     * The email address of the user.
+     */
+    @NotBlank
     @Email
     private String email;
 
-    @NonNull
-    @Size(max = 20)
+    /**
+     * The username of the user.
+     */
+    @NotBlank
     private String username;
-
-    @JsonIgnore
-    @Size(max = 120)
-    private String password;
 
 }

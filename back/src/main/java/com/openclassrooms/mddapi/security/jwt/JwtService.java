@@ -12,7 +12,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
-
+/**
+ * Service for handling JWT (JSON Web Token) operations.
+ * <p>
+ * This service provides methods for generating, parsing, and validating JWT
+ * tokens.
+ * </p>
+ */
 @Service
 public class JwtService {
 
