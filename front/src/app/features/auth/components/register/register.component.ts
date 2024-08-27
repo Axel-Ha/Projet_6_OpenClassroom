@@ -30,7 +30,7 @@ export class RegisterComponent {
     const registerRequest = this.registerForm.value as RegisterRequest;
     this.authService.register(registerRequest).subscribe({
       next: _ => {
-        this.router.navigate(['/auth/login'])
+        this.router.navigate(['/login'])
         this.matSnackBar.open('Inscription réussie', 'Fermer', { duration: 3000 });
       },
       error: _ => {

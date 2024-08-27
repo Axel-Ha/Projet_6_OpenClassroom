@@ -52,7 +52,6 @@ export class MeComponent implements OnInit {
     const user = this.meForm!.value as User;
     this.userService.update(this.userId, user).subscribe({
       next: (sessionInfo: SessionInformation) => {
-        console.log(sessionInfo);
         this.sessionInfo = sessionInfo;
         localStorage.setItem('token', sessionInfo.token);
         this.sessionService.logIn(sessionInfo);
