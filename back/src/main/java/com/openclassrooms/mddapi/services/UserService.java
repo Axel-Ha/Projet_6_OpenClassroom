@@ -83,38 +83,12 @@ public class UserService {
      * @throws NotFoundException   if no user is found with the given id
      * @throws BadRequestException if the email or username is already in use
      */
-    public ResponseEntity<?> updateUserV2(Long id, UserDto userDto){
-        UserEntity user = userRepository.findById(id).orElseThrow(() -> new NotFoundException());
-        if (userRepository.existsByEmail(userDto.getEmail()) && !userDto.getEmail().equalsIgnoreCase(user.getEmail())) {
-            return ResponseEntity.badRequest().body(new MessageResponse("L'email est déjà utilisé"));
-
-        }
-
-        if (userRepository.existsByUsername(userDto.getUsername()) && !userDto.getUsername().equalsIgnoreCase(user.getUsername())) {
-            return ResponseEntity.badRequest().body(new MessageResponse("L'username est déjà utilisé"));
-        }
-
-        user.setEmail(userDto.getEmail());
-        user.setUsername(userDto.getUsername());
-        userRepository.save(user);
-
-        UserDetailsImpl userDetails = (UserDetailsImpl) userDetailsService.loadUserByUsername(user.getUsername());
-        String token = jwtService.generateToken(userDetails);
-
-        return ResponseEntity.ok(new AuthResponse(
-                token,
-                userDetails.getId(),
-                userDetails.getUsername(),
-                userDetails.getEmail()
-        ));
-    }
-
     public ResponseEntity<?> updateUser(Long id, UserDto userDto) {
         UserEntity user = userRepository.findById(id).orElseThrow(() -> new NotFoundException());
         boolean hasUpdated = false;
         String errorMessage = "";
 
-        // Vérifier si un autre utilisateur a déjà cet email
+        // Check if an user already have this mail
         if (!userDto.getEmail().equalsIgnoreCase(user.getEmail())) {
             if (userRepository.existsByEmailAndIdNot(userDto.getEmail(), user.getId())) {
                 errorMessage = "L'email est déjà utilisé par un autre utilisateur";
@@ -125,7 +99,7 @@ public class UserService {
             }
         }
 
-        // Vérifier si un autre utilisateur a déjà ce nom d'utilisateur
+        // Check if an user already have this name
         if (!userDto.getUsername().equalsIgnoreCase(user.getUsername())) {
             if (userRepository.existsByUsernameAndIdNot(userDto.getUsername(), user.getId())) {
                 errorMessage = "Le nom d'utilisateur est déjà utilisé par un autre utilisateur";
@@ -136,7 +110,6 @@ public class UserService {
             }
         }
 
-        // Si des modifications ont été faites, enregistrer et générer un nouveau token
         if (hasUpdated) {
             userRepository.save(user);
 
