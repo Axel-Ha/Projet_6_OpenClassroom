@@ -83,17 +83,15 @@ public class UserService {
      * @throws NotFoundException   if no user is found with the given id
      * @throws BadRequestException if the email or username is already in use
      */
-    public ResponseEntity<?> updateUser(Long id, UserDto userDto){
+    public ResponseEntity<?> updateUserV2(Long id, UserDto userDto){
         UserEntity user = userRepository.findById(id).orElseThrow(() -> new NotFoundException());
-
-
         if (userRepository.existsByEmail(userDto.getEmail()) && !userDto.getEmail().equalsIgnoreCase(user.getEmail())) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Email already in use"));
+            return ResponseEntity.badRequest().body(new MessageResponse("L'email est déjà utilisé"));
+
         }
 
-
         if (userRepository.existsByUsername(userDto.getUsername()) && !userDto.getUsername().equalsIgnoreCase(user.getUsername())) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Username already in use"));
+            return ResponseEntity.badRequest().body(new MessageResponse("L'username est déjà utilisé"));
         }
 
         user.setEmail(userDto.getEmail());
@@ -110,6 +108,51 @@ public class UserService {
                 userDetails.getEmail()
         ));
     }
+
+    public ResponseEntity<?> updateUser(Long id, UserDto userDto) {
+        UserEntity user = userRepository.findById(id).orElseThrow(() -> new NotFoundException());
+        boolean hasUpdated = false;
+        String errorMessage = "";
+
+        // Vérifier si un autre utilisateur a déjà cet email
+        if (!userDto.getEmail().equalsIgnoreCase(user.getEmail())) {
+            if (userRepository.existsByEmailAndIdNot(userDto.getEmail(), user.getId())) {
+                errorMessage = "L'email est déjà utilisé par un autre utilisateur";
+                return ResponseEntity.badRequest().body(new MessageResponse(errorMessage));
+            } else {
+                user.setEmail(userDto.getEmail());
+                hasUpdated = true;
+            }
+        }
+
+        // Vérifier si un autre utilisateur a déjà ce nom d'utilisateur
+        if (!userDto.getUsername().equalsIgnoreCase(user.getUsername())) {
+            if (userRepository.existsByUsernameAndIdNot(userDto.getUsername(), user.getId())) {
+                errorMessage = "Le nom d'utilisateur est déjà utilisé par un autre utilisateur";
+                return ResponseEntity.badRequest().body(new MessageResponse(errorMessage));
+            } else {
+                user.setUsername(userDto.getUsername());
+                hasUpdated = true;
+            }
+        }
+
+        // Si des modifications ont été faites, enregistrer et générer un nouveau token
+        if (hasUpdated) {
+            userRepository.save(user);
+
+            UserDetailsImpl userDetails = (UserDetailsImpl) userDetailsService.loadUserByUsername(user.getUsername());
+            String token = jwtService.generateToken(userDetails);
+            return ResponseEntity.ok(new AuthResponse(
+                    token,
+                    userDetails.getId(),
+                    userDetails.getUsername(),
+                    userDetails.getEmail()
+            ));
+        } else {
+            return ResponseEntity.ok(new MessageResponse("Aucune modification n'a été effectuée"));
+        }
+    }
+
 
     /**
      * Retrieves a list of topics that the user is subscribed to.

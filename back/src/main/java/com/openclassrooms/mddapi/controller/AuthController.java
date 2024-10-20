@@ -17,7 +17,6 @@ import static com.openclassrooms.mddapi.configuration.SwaggerConfig.NAME_SECURIT
  * Controller for authentication-related endpoints.
  * Provides endpoints for user login and registration.
  */
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth")
 @Tag(name = "Auth Controller")

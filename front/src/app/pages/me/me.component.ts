@@ -52,6 +52,10 @@ export class MeComponent implements OnInit {
     const user = this.meForm!.value as User;
     this.userService.update(this.userId, user).subscribe({
       next: (sessionInfo: SessionInformation) => {
+        if(sessionInfo.message){
+          this.matSnackBar.open(sessionInfo.message, 'Fermer', { duration: 3000 });
+          return;
+        }
         this.sessionInfo = sessionInfo;
         localStorage.setItem('token', sessionInfo.token);
         this.sessionService.logIn(sessionInfo);

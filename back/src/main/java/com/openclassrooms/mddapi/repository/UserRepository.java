@@ -17,6 +17,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
      * Finds a user by their email.
      *
      * @param email the email of the user
+     * @param username the username of the user
      * @return an {@link Optional} containing the found user, or {@link Optional#empty()} if no user found
      */
     Optional<UserEntity> findByEmailOrUsername(String username, String email);
@@ -36,4 +37,22 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
      * @return {@code true} if a user with the given username exists, {@code false} otherwise
      */
     Boolean existsByUsername(String username);
+
+    /**
+     * Checks if another user exists with the given email, excluding the user with the specified ID.
+     *
+     * @param email the email to check
+     * @param id the ID of the user to exclude from the check
+     * @return {@code true} if another user with the given email exists, {@code false} otherwise
+     */
+    Boolean existsByEmailAndIdNot(String email, Long id);
+
+    /**
+     * Checks if another user exists with the given username, excluding the user with the specified ID.
+     *
+     * @param username the username to check
+     * @param id the ID of the user to exclude from the check
+     * @return {@code true} if another user with the given username exists, {@code false} otherwise
+     */
+    Boolean existsByUsernameAndIdNot(String username, Long id);
 }
