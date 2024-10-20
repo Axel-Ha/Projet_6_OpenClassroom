@@ -26,7 +26,6 @@ const materialModules = [
   imports: [
     AuthRoutingModule,
     CommonModule,
-    // FlexLayoutModule,
     FormsModule,
     ReactiveFormsModule,
     ...materialModules

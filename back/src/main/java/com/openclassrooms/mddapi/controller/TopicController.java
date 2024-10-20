@@ -19,7 +19,6 @@ import static com.openclassrooms.mddapi.configuration.SwaggerConfig.NAME_SECURIT
  *
  * @see TopicService
  */
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/topic")
 public class TopicController {

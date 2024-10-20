@@ -33,7 +33,6 @@ import static com.openclassrooms.mddapi.configuration.SwaggerConfig.NAME_SECURIT
  * @see PostDto
  * @see PostService
  */
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/post")
 public class PostController {

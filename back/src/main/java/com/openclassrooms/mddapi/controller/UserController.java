@@ -29,7 +29,6 @@ import static com.openclassrooms.mddapi.configuration.SwaggerConfig.NAME_SECURIT
  * @see UserDto
  * @see UserService
  */
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/user")
 public class UserController {

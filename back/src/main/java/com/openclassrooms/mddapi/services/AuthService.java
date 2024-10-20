@@ -115,12 +115,13 @@ public class AuthService {
      *         success
      *         or error message
      */
+
     public ResponseEntity<?> register(RegisterRequest registerRequest){
         if (userRepository.existsByEmail(registerRequest.getEmail())) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Error: Email is already taken!"));
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: L'email est déjà utilisé par un autre utilisateur"));
         }
         if (userRepository.existsByUsername(registerRequest.getUsername())) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Error: username is already taken!"));
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Le nom d'utilisateur est déjà utilisé par un autre utilisateur"));
         }
 
         UserEntity user = new UserEntity();

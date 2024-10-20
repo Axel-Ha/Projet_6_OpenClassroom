@@ -26,7 +26,6 @@ import static com.openclassrooms.mddapi.configuration.SwaggerConfig.NAME_SECURIT
  * @see CommentDto
  * @see CommentService
  */
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/comment")
 public class CommentController {
