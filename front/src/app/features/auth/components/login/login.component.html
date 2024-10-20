@@ -1,0 +1,19 @@
+<div>
+    <button class="arrow-back" mat-icon-button routerLink="">
+        <mat-icon>arrow_back</mat-icon>
+    </button>
+    <div class="column center">
+        <div class="title">Se connecter</div>
+        <form class="login-form column" [formGroup]="loginForm">
+                <div>Email</div>
+                <mat-form-field class="input-form" appearance="outline">
+                    <input matInput label="E-mail" formControlName="email">
+                </mat-form-field>
+                <div>Mot de passe</div>
+                <mat-form-field class="input-form" appearance="outline">
+                    <input matInput [type]="'password'" formControlName="password">
+                </mat-form-field>
+            <button role="submit" mat-raised-button color="primary" (click)="submit()" [disabled]="loginForm.invalid"> Se connecter </button>
+        </form>
+    </div>
+</div>
