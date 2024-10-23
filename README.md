@@ -1,25 +1,64 @@
-# P6-Full-Stack-reseau-dev
+# Application MDD App
 
-## Front
+## Installations
+Pour le bon fonctionnement du projet, vous aurez besoin de plusieurs éléments.
+   ### WampServer
+   - Télécharger et installer WampServer
+   - > https://wampserver.aviatechno.net/index.php?affiche=install&lang=fr.
+   
+   ### Apache Maven
+   - Télécharger et installer Apache Maven
+   - > https://maven.apache.org/download.cgi
+   
+   ### Java Developpment Kit
+   - Télécharger et installer Java Developpment Kit
+   - > https://www.oracle.com/java/technologies/downloads/
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.1.3.
+   ### Node Module
+   - Rendez-vous dans le dossier `/chemin/vers/votre/projet/Front-End/` et utilisez la commande `npm install` dans l'invité de commandesmv
 
-Don't forget to install your node_modules before starting (`npm install`).
+## Database Configuration
 
-### Development server
+1. **MySQL Configuration:**
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+   - L'utilisateur par default est `root`, il n'y a pas de mot de passe.
+   - Create a database named `your_database_name`.
 
-### Build
+2. **Création Base de données in PhpMyAdminer**
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+   - Rendez vous sur l'adresse suivante : `localhost`
+   - Acceder maintenant a `PhpMyAdmin` et connectez vous.
+   - Créez votre base de données
+   - Depuis l'onglet import, importer le script pour la création de la database qui se trouve :
+     > /chemin/vers/votre/projet/Front-End/ressources/sql/script.sql
 
-### Where to start
+3. **Création clé secrete**  
+   Pour créer votre clé secrète, vous pouvez en générer une à partir de ce site `https://asecuritysite.com/encryption/plain`.  
+   Choisissez la clé `256-bit` et cliquez sur `determine`  
+   `Hex key` sera votre `clé secrète`  
 
-As you may have seen if you already started the app, a simple home page containing a logo, a title and a button is available. If you take a look at its code (in the `home.component.html`) you will see that an external UI library is already configured in the project.
+4. **Configuration de la base de données dans Spring Boot:** 
+   - Mise a jour de application properties `/chemin/vers/votre/projet/Back-End/SpringSecurityConfig/src/main/resources/application.properties` :
+     ```properties
+     spring.datasource.url=jdbc:mysql://localhost:3306/your_database_name
+     spring.datasource.username=root
+     spring.datasource.password=
+     spring.jpa.hibernate.ddl-auto=update
+     pictures.path=/chemin/pour/entroposer/vos/images/
+     jwt.secret=votre_clé_secrète
+     ```
 
-This library is `@angular/material`, it's one of the most famous in the angular ecosystem. As you can see on their docs (https://material.angular.io/), it contains a lot of highly customizable components that will help you design your interfaces quickly.
+## Lancement du projet
 
-Note: I recommend to use material however it's not mandatory, if you prefer you can get ride of it.
+- Pour lancer le projet, vous devrez tout d'abord créer les variables d'environnement pour Java et Maven.  
+- Pour lancer le serveur Java, dans un terminal placez vous dans le dossier `/Back-End/SpringSecurityConfig` et entrez la commande `mvn spring-boot:run`.  
+- Pour lancer le serveur Angular, dans un terminal placez vous dans le dossier `/Front-end` et entrez la commande `npm run start`.
 
-Good luck!
+
+## Acceder à l'application
+
+- Pour acceder à l'application, rendez-vous sur : `localhost:4200`
+
+## Documentation Swagger de l'API
+
+- Pour acceder à la documentation , rendez-vous sur : `http://localhost:3001/swagger-ui/index.html#/`
