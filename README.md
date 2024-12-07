@@ -15,7 +15,7 @@ Pour le bon fonctionnement du projet, vous aurez besoin de plusieurs éléments.
    - > https://www.oracle.com/java/technologies/downloads/
 
    ### Node Module
-   - Rendez-vous dans le dossier `/chemin/vers/votre/projet/Front-End/` et utilisez la commande `npm install` dans l'invité de commandesmv
+   - Rendez-vous dans le dossier `/chemin/vers/votre/projet/Front-End/` et utilisez la commande `npm install` dans l'invité de commandes
 
 ## Database Configuration
 
