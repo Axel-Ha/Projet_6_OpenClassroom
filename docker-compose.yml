@@ -49,3 +49,11 @@ volumes:
 networks:
   project-network:
     driver: bridge
+
+
+MYSQL_ROOT_PASSWORD=roo
+MYSQL_DATABASE=mdd
+MYSQL_USER=root
+MYSQL_PASSWORD=root
+
+JWT_SECRET=edb4ecd2a0bd4654bda1c75ea56107fd4ab5eb17dffbdb625179842893f0ca30
