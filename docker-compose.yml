@@ -1,5 +1,5 @@
-version : '3.8'
-services : 
+version: "3.3"
+services:
   mysql:
     image: mysql:5.7
     container_name: mysql
@@ -14,12 +14,11 @@ services :
       - mysql-data:/var/lib/mysql
     networks:
       - mdd-network
-  
+
   backend:
     build: ./back
-    dockerfile: Dockerfile
     container_name: springboot-container
-    enviropment:
+    environment:
       - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/bdd_mdd
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=root
@@ -29,11 +28,10 @@ services :
       - mdd-network
     depends_on:
       - mysql
-  
+
   frontend:
-    build: 
+    build:
       context: ./front
-      dockerfile: Dockerfile
     container_name: angular-container
     ports:
       - "4200:4200"
@@ -41,10 +39,10 @@ services :
       - mdd-network
     depends_on:
       - backend
-  
-  volumes:
-    mysql-data:
 
-  networks:
-    mdd-network:
-      driver: bridge
+volumes:
+  mysql-data:
+
+networks:
+  mdd-network:
+    driver: bridge
