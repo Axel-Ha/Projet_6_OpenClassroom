@@ -41,15 +41,15 @@ CREATE TABLE `subscriptions` (
     `topic_id` INT
 );
 
-INSERT INTO `TOPICS` (`name`, `description`) 
+INSERT INTO `topics` (`name`, `description`) 
 VALUES 
 ('Java', 'Tout ce que touche autours de java.'),
 ('Angular', 'Tout ce que touche autours de Angular.'),
 ('JavaScript', 'Tout ce que touche autours de JavaScript.');
  
-ALTER TABLE `POSTS` ADD FOREIGN KEY (`topic_id`) REFERENCES `TOPICS` (`topic_id`);
-ALTER TABLE `POSTS` ADD FOREIGN KEY (`author_id`) REFERENCES `USERS` (`user_id`);
-ALTER TABLE `COMMENTS` ADD FOREIGN KEY (`author_id`) REFERENCES `USERS` (`user_id`);
-ALTER TABLE `COMMENTS` ADD FOREIGN KEY (`post_id`) REFERENCES `POSTS` (`post_id`);
-ALTER TABLE `SUBSCRIPTIONS` ADD FOREIGN KEY (`user_id`) REFERENCES `USERS` (`user_id`);
-ALTER TABLE `SUBSCRIPTIONS` ADD FOREIGN KEY (`topic_id`) REFERENCES `TOPICS` (`topic_id`);
+ALTER TABLE `posts` ADD FOREIGN KEY (`topic_id`) REFERENCES `topics` (`topic_id`);
+ALTER TABLE `posts` ADD FOREIGN KEY (`author_id`) REFERENCES `users` (`user_id`);
+ALTER TABLE `comments` ADD FOREIGN KEY (`author_id`) REFERENCES `users` (`user_id`);
+ALTER TABLE `comments` ADD FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`);
+ALTER TABLE `subscriptions` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+ALTER TABLE `subscriptions` ADD FOREIGN KEY (`topic_id`) REFERENCES `topics` (`topic_id`);
