@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 services:
   db:
     platform: linux/x86_64
@@ -6,16 +6,12 @@ services:
     ports:
       - 3306:3306
     restart: always
-  
+
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD} # Mot de passe root
       MYSQL_DATABASE: ${MYSQL_DATABASE} # Nom de la base de données
-      MYSQL_USER: ${MYSQL_USER} # Nom d'utilisateur
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD} # Mot de passe de l'utilisateur
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/${MYSQL_DATABASE}
-      SPRING_DATASOURCE_USERNAME: ${MYSQL_USER}
-      SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD}
-      JWT_SECRET: ${JWT_SECRET} # Clé secrète pour JWT
+      #  MYSQL_USER: ${MYSQL_USER} # Nom d'utilisateur
+      #MYSQL_PASSWORD: ${MYSQL_PASSWORD} # Mot de passe de l'utilisateur
 
   backend:
     depends_on:
@@ -23,9 +19,10 @@ services:
     build: ./back
     restart: always
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/${MYSQL_DATABASE}
-      SPRING_DATASOURCE_USERNAME: ${MYSQL_USER}
-      SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD}
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: ${SPRING_DATASOURCE_DRIVER_CLASS_NAME}
       JWT_SECRET: ${JWT_SECRET} # Clé secrète pour JWT
     ports:
       - 8080:8080
@@ -35,4 +32,4 @@ services:
       - db
     build: ./front
     ports:
-      - 4200:4200
+      - 4200:80

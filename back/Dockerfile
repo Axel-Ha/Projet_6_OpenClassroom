@@ -8,9 +8,7 @@ COPY pom.xml /workspace
 
 COPY src /workspace/src
 
-RUN mvn -f pom.xml clean package
-
-
+RUN mvn -f pom.xml clean package -DskipTests
 
 FROM openjdk:17-alpine
 
