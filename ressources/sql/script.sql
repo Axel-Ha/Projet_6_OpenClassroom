@@ -35,6 +35,12 @@ CREATE TABLE `subscriptions` (
     `topic_id` INT
 );
 
+INSERT INTO `TOPICS` (`name`, `description`) 
+VALUES 
+('Java', 'Tout ce que touche autours de java.'),
+('Angular', 'Tout ce que touche autours de Angular.'),
+('JavaScript', 'Tout ce que touche autours de JavaScript.'),
+ 
 ALTER TABLE `POSTS` ADD FOREIGN KEY (`topic_id`) REFERENCES `TOPICS` (`topic_id`);
 ALTER TABLE `POSTS` ADD FOREIGN KEY (`author_id`) REFERENCES `USERS` (`user_id`);
 ALTER TABLE `COMMENTS` ADD FOREIGN KEY (`author_id`) REFERENCES `USERS` (`user_id`);
