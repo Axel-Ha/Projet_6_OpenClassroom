@@ -1,10 +1,10 @@
-CREATE TABLE `TOPICS` (
+CREATE TABLE `topics` (
     `topic_id` INT PRIMARY KEY AUTO_INCREMENT,
     `name` VARCHAR(50),
     `description` VARCHAR(2000)
 );
 
-CREATE TABLE `POSTS` (
+CREATE TABLE `posts` (
     `post_id` INT PRIMARY KEY AUTO_INCREMENT,
     `topic_id` INT,
     `title` VARCHAR(50),
@@ -13,7 +13,7 @@ CREATE TABLE `POSTS` (
     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE `COMMENTS` (
+CREATE TABLE `comments` (
     `comment_id` INT PRIMARY KEY AUTO_INCREMENT,
     `author_id` INT,
     `post_id` INT,
@@ -21,7 +21,7 @@ CREATE TABLE `COMMENTS` (
     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE `USERS` (
+CREATE TABLE `users` (
     `user_id` INT PRIMARY KEY AUTO_INCREMENT,
     `username` VARCHAR(40),
     `email` VARCHAR(100),
@@ -30,7 +30,7 @@ CREATE TABLE `USERS` (
     `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-CREATE TABLE `SUBSCRIPTIONS` (
+CREATE TABLE `subscriptions` (
     `user_id` INT,
     `topic_id` INT
 );

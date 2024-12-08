@@ -14,6 +14,6 @@ FROM openjdk:17-alpine
 
 COPY --from=build /workspace/target/*.jar app.jar
 
-EXPOSE 8080
+EXPOSE 3001
 
 ENTRYPOINT [ "java", "-jar", "/app.jar" ]

@@ -5,6 +5,8 @@ services:
     image: "mysql:5.7"
     ports:
       - 3306:3306
+    volumes:
+      - db-data:/var/lib/mysql # Volume pour persister les données de la base
     restart: always
 
     environment:
@@ -25,7 +27,7 @@ services:
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: ${SPRING_DATASOURCE_DRIVER_CLASS_NAME}
       JWT_SECRET: ${JWT_SECRET} # Clé secrète pour JWT
     ports:
-      - 8080:8080
+      - 3001:3001
 
   frontend:
     depends_on:
@@ -33,3 +35,6 @@ services:
     build: ./front
     ports:
       - 4200:80
+
+volumes:
+  db-data:
