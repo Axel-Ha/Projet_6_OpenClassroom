@@ -1,27 +1,21 @@
-#  image officielle Maven
-FROM maven AS build
+FROM maven:3-openjdk-17-slim as build
 
-# Définir le répertoire de travail dans le conteneur pour le code source
-WORKDIR /app
+RUN mkdir -p /workspace
 
-# Copier projet dans le répertoire de travail
-COPY . .
+WORKDIR /workspace
 
-# construire le fichier JAR
-#-DskipTests ignore les tests
-RUN mvn clean package -DskipTests
+COPY pom.xml /workspace
 
-# image légère d'OpenJDK 17 pour exécuter l'application
-FROM openjdk:17-jdk-slim
+COPY src /workspace/src
 
-# Définir le répertoire de travail dans le conteneur
-WORKDIR /app
+RUN mvn -f pom.xml clean package
 
-# Copier le fichier JAR généré depuis la première étape dans l'image finale
-COPY --from=build /app/target/*.jar app.jar
 
-# Exposer le port 8080
+
+FROM openjdk:17-alpine
+
+COPY --from=build /workspace/target/*.jar app.jar
+
 EXPOSE 8080
 
-# Définir la commande de démarrage pour exécuter le fichier JAR
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT [ "java", "-jar", "/app.jar" ]

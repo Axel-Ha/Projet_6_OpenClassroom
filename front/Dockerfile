@@ -1,22 +1,12 @@
-# Étape de build avec Node.js
-FROM node:16 AS build
-
-# Définir le répertoire de travail
+### STAGE 1: Build ###
+FROM node:14.21-alpine3.16 AS build
 WORKDIR /app
-
-# Copier les fichiers package.json et package-lock.json
-COPY package*.json ./
-
-# Installer les dépendances
+COPY package.json package-lock.json ./
 RUN npm install
-
-# Copier tout le code source
 COPY . .
+RUN npm run build
 
-# Construire l'application Angular
-RUN npm run build --prod
-
-# Étape de déploiement avec NGINX
-FROM nginx:alpine
+### STAGE 2: Run ###
+FROM nginx:1.17.1-alpine
+COPY nginx.conf /etc/nginx/nginx.conf
 COPY --from=build /app/dist/* /usr/share/nginx/html
-EXPOSE 4200
